@@ -86,32 +86,36 @@ module Extra = struct
     Step(fun w -> a w |> fun (a,w) -> (w,`Inl a))
 
 
-  
+  (* basic version - runs till completion *)
   let rec run w a = 
     dest_Step a |> fun a ->
     a w |> fun (w,rest) ->
     match rest with 
-    | `Inl a -> Ok(w,a)
+    | `Inl a -> (w,a)
     | `Inr a -> run w a
 
+  let _ = run
 
 
-  (* NOTE to run, we assume that there is some predicate
-     dest_exceptional that indicates that we are not supposed to step
-     further; in concrete cases, we must always check this condition before
-     calling run *)
+
+  (* NOTE for "unexpected" errors, for which there is no obvious way
+     to continue, we halt and expect some "higher layer" to pick up
+     the pieces; for this we need some way to check the state to
+     detect whether there is an unexpected error... typically there
+     will be a single optional reference in the state which, if set,
+     describes the error that occurred
+  *)
   (* used to be called run ~dest_exceptional *)
-  (* FIXME this is not the most obvious way to run *)
   let run_with_halt ~halt w a =
     let rec run w a = 
       match halt w with
       (* FIXME shouldn't discard Some info? or make a boolean *)
-      | true -> Error (`Attempt_to_step_exceptional_state w)
+      | true -> w, Error `Attempt_to_step_halted_state
       | false -> 
         dest_Step a |> fun a ->
         a w |> fun (w,rest) -> 
         match rest with 
-        | `Inl a -> Ok(w,a)
+        | `Inl a -> w, Ok a
         | `Inr a -> run w a
     in
     run w a
