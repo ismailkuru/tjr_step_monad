@@ -5,7 +5,7 @@ set -a # export all vars
 # NOTE in toplevel you need to #require "bos.top" and bos.setup;;
 
 libname="tjr_step_monad"
-required_packages="str,core_kernel,ppx_deriving_yojson,rresult,bos.setup,fileutils,omd"
+required_packages="stdlib"
 description="A common monad, in its own repo/library"
 
 function clean() {

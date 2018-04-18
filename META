@@ -1,6 +1,6 @@
 name="tjr_step_monad"
 description="A common monad, in its own repo/library"
 version="2018-04-18"
-requires="str,core_kernel,ppx_deriving_yojson,rresult,bos.setup,fileutils,omd"
+requires="stdlib"
 archive(byte)="tjr_step_monad.cma"
 archive(native)="tjr_step_monad.cmxa"
