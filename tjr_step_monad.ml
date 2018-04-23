@@ -63,7 +63,8 @@ module Step_monad_implementation = struct
   let _ = fmap
 
 
-
+  (* FIXME note that these are dangerous if w is changed between get
+     and set; deprecate?  *)
   let get_world () = Step(fun w -> (w,`Inl w))
       
   let _ = get_world
@@ -71,6 +72,9 @@ module Step_monad_implementation = struct
   let set_world w = Step(fun w' -> (w,`Inl ()))
 
   let _ = set_world
+
+  let with_world (f:'w -> 'a * 'w) : ('a,'w) m = 
+    Step(fun w -> f w |> fun (a,w) -> (w,`Inl a))
 
 end
 
