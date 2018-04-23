@@ -1,5 +1,10 @@
 (* a simple step monad ---------------------------------------------- *)
 
+(* NOTE the monad in isa_btree is there so that we can be explicit
+   about errors; it is NOT there to model steps (the definitions are all
+   small step anyway). *)
+
+
 (* FIXME do we also want a separate package for type either? this
    seems a bit complicated *)
 type ('a,'b) either = [ `Inl of 'a | `Inr of 'b ] 
@@ -12,6 +17,7 @@ module type MONAD = sig
   type ('a,'w) m
   val return: 'a -> ('a,'w) m
   val bind: ('a -> ('b,'w)m) -> ('a,'w)m -> ('b,'w)m
+  val fmap: ('a -> 'b) -> ('a, 'w) m -> ('b, 'w) m
 end
 
 (* NOTE the following should not be accessed directly - we want to
@@ -55,6 +61,16 @@ module Step_monad_implementation = struct
          | `Inr a -> `Inr (fmap f a)))
 
   let _ = fmap
+
+
+
+  let get_world () = Step(fun w -> (w,`Inl w))
+      
+  let _ = get_world
+
+  let set_world w = Step(fun w' -> (w,`Inl ()))
+
+  let _ = set_world
 
 end
 
