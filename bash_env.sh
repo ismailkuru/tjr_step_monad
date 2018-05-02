@@ -12,6 +12,7 @@ function clean() {
 	rm -f *.cmi *.cmo *.cmx *.o *.x *.a *.cma *.cmxa
 	find . -maxdepth 1 -type l -exec rm -f \{\} \;
   rm -f *.html *.css
+  rm -f META
 }
 
 mls=`ocamldep -sort -one-line *.ml`

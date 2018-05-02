@@ -1,6 +1,0 @@
-name="tjr_step_monad"
-description="A common monad, in its own repo/library"
-version="2018-04-23"
-requires="stdlib"
-archive(byte)="tjr_step_monad.cma"
-archive(native)="tjr_step_monad.cmxa"
